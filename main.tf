@@ -18,7 +18,7 @@ resource "aws_instance" "web" {
   vpc_security_group_ids      = ["value"]
   associate_public_ip_address = false
   source_dest_check           = true
-  user_data                   = templatefile("${path.module}/userdata.tpl")
+  user_data                   = var.user_data
   root_block_device {
     volume_type           = "gp2"
     volume_size           = 128
