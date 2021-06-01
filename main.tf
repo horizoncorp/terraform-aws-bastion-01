@@ -12,7 +12,7 @@ data "template_file" "init" {
   template = "${file("${path.module}/init.tpl")}"
 }
 
-resource "aws_instance" "web" {
+resource "aws_instance" "bastion" {
   ami                         = data.aws_ami.bastion_ami.id
   instance_type               = var.instance_type
   ebs_optimized               = true
