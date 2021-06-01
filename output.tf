@@ -1,5 +1,6 @@
 output "bastion_private_key" {
   description = "Private key generated for bastion"
+  sensitive   = true
   value       = tls_private_key.bastion_private_ssh_key.private_key_pem
 }
 
