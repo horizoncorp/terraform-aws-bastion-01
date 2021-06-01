@@ -16,6 +16,7 @@ module "sg" {
   source = "github.com/horizoncorp/terraform-aws-securitygroup-01"
   name   = "sg"
   vpc_id = var.vpc_id
+  tags = var.tags
 }
 
 resource "aws_instance" "bastion" {
@@ -35,6 +36,10 @@ resource "aws_instance" "bastion" {
     delete_on_termination = true
     encrypted             = true
   }
+  tags = merge(var.tags,{
+    Name = var.name,
+    Role = "Bastion"
+  })
 }
 
 module "sg-ssh" {
