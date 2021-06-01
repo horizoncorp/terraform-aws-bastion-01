@@ -8,6 +8,10 @@ resource "aws_key_pair" "generated_key" {
   public_key = tls_private_key.bastion_private_ssh_key.public_key_openssh
 }
 
+data "template_file" "init" {
+  template = "${file("${path.module}/init.tpl")}"
+}
+
 resource "aws_instance" "web" {
   ami                         = data.aws_ami.bastion_ami.id
   instance_type               = var.instance_type
@@ -18,7 +22,7 @@ resource "aws_instance" "web" {
   vpc_security_group_ids      = ["value"]
   associate_public_ip_address = false
   source_dest_check           = true
-  user_data                   = var.user_data
+  user_data                   = join("\n", [data.template_file.init.rendered, var.user_data])
   root_block_device {
     volume_type           = "gp2"
     volume_size           = 128
