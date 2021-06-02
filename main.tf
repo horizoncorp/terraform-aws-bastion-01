@@ -1,10 +1,20 @@
+locals {
+  environment = lookup(var.tags, "Envioronment","environment")
+  department = lookup(var.tags, "Department","department")
+  role = lookup(var.tags, "Role","role")
+  id = lookup(var.tags, "ID","id")
+
+  key_name = "${local.environment}-${local.department}-key-${local.role}-${local.id}"
+  bastion_name = "${local.environment}-${local.department}-ec2-${local.role}-${local.id}"
+}
+
 resource "tls_private_key" "bastion_private_ssh_key" {
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
 resource "aws_key_pair" "generated_key" {
-  key_name = "${var.environment}-bastion"
+  key_name = local.key_name
   public_key = tls_private_key.bastion_private_ssh_key.public_key_openssh
 }
 
@@ -14,7 +24,7 @@ data "template_file" "init" {
 
 module "sg" {
   source = "github.com/horizoncorp/terraform-aws-securitygroup-01"
-  name   = "sg"
+  name   = local.sg_name
   vpc_id = var.vpc_id
   tags = var.tags
 }
@@ -36,15 +46,17 @@ resource "aws_instance" "bastion" {
     delete_on_termination = true
     encrypted             = true
   }
-  tags = merge(var.tags,{
-    Name = var.name,
-    Role = "Bastion"
+  tags = merge(var.tags, {
+    Name = local.bastion_name
   })
 }
 
 module "sg-ssh" {
   source = "github.com/horizoncorp/terraform-aws-securitygroup-01/modules/allow-ssh-22"
-  name   = "sg-ssh"
+  name   = local.sgrule_ssh_name
   security_group_id = module.sg.sg_id
   cidr_blocks = ["10.0.0.0/24"]
+  tags = merge(var.tags, {
+    Rule = "ssh"
+  })
 }
