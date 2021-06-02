@@ -1,5 +1,4 @@
 data "aws_ami" "bastion_ami" {
-  image_location = var.region
   most_recent = "true"
   owners      = ["amazon"]
   filter {
