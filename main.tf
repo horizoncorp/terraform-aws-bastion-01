@@ -36,7 +36,7 @@ resource "aws_instance" "bastion" {
   key_name                    = aws_key_pair.generated_key.key_name
   subnet_id                   = var.subnet_id
   vpc_security_group_ids      = [module.sg.sg_id]
-  associate_public_ip_address = false
+  associate_public_ip_address = true
   source_dest_check           = true
   user_data                   = join("\n", [data.template_file.init.rendered, var.user_data])
   root_block_device {
