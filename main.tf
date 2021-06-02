@@ -32,7 +32,7 @@ resource "aws_instance" "bastion" {
   ami                         = data.aws_ami.bastion_ami.id
   instance_type               = var.instance_type
   ebs_optimized               = true
-  monitoring                  = false
+  # monitoring                  = false
   key_name                    = aws_key_pair.generated_key.key_name
   subnet_id                   = var.subnet_id
   vpc_security_group_ids      = [module.sg.sg_id]
