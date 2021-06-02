@@ -1,5 +1,5 @@
 locals {
-  environment = lookup(var.tags, "Envioronment","environment")
+  environment = lookup(var.tags, "Environemnt","environment")
   department = lookup(var.tags, "Department","department")
   role = lookup(var.tags, "Role","role")
   id = lookup(var.tags, "ID","id")
