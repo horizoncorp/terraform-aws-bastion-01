@@ -48,7 +48,7 @@ resource "aws_instance" "bastion" {
   tags = merge(var.tags, {
     Name = local.bastion_name
   })
-  lyfecycle {
+  lifecycle {
     ignore_changes = [
       root_block_device.volume_type,
       root_block_device.delete_on_termination,
