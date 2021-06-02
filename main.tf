@@ -53,10 +53,6 @@ resource "aws_instance" "bastion" {
 
 module "sg-ssh" {
   source = "github.com/horizoncorp/terraform-aws-securitygroup-01/modules/allow-ssh-22"
-  name   = local.sgrule_ssh_name
   security_group_id = module.sg.sg_id
   cidr_blocks = ["10.0.0.0/24"]
-  tags = merge(var.tags, {
-    Rule = "ssh"
-  })
 }
