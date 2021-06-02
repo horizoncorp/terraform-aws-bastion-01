@@ -24,7 +24,6 @@ data "template_file" "init" {
 
 module "sg" {
   source = "github.com/horizoncorp/terraform-aws-securitygroup-01"
-  name   = local.sg_name
   vpc_id = var.vpc_id
   tags = var.tags
 }
