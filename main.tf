@@ -28,27 +28,27 @@ module "sg" {
   tags = var.tags
 }
 
-resource "aws_instance" "bastion" {
-  ami                         = data.aws_ami.bastion_ami.id
-  instance_type               = var.instance_type
-  # ebs_optimized               = true
-  # monitoring                  = false
-  key_name                    = aws_key_pair.generated_key.key_name
-  subnet_id                   = var.subnet_id
-  vpc_security_group_ids      = [module.sg.sg_id]
-  associate_public_ip_address = false
-  source_dest_check           = true
-  user_data                   = join("\n", [data.template_file.init.rendered, var.user_data])
-  root_block_device {
-    volume_type           = "gp2"
-    volume_size           = 128
-    delete_on_termination = true
-    encrypted             = true
-  }
-  tags = merge(var.tags, {
-    Name = local.bastion_name
-  })
-}
+# resource "aws_instance" "bastion" {
+#   ami                         = data.aws_ami.bastion_ami.id
+#   instance_type               = var.instance_type
+#   ebs_optimized               = true
+#   monitoring                  = false
+#   key_name                    = aws_key_pair.generated_key.key_name
+#   subnet_id                   = var.subnet_id
+#   vpc_security_group_ids      = [module.sg.sg_id]
+#   associate_public_ip_address = false
+#   # source_dest_check           = true
+#   user_data                   = join("\n", [data.template_file.init.rendered, var.user_data])
+#   root_block_device {
+#     volume_type           = "gp2"
+#     volume_size           = 128
+#     delete_on_termination = true
+#     encrypted             = true
+#   }
+#   tags = merge(var.tags, {
+#     Name = local.bastion_name
+#   })
+# }
 
 module "sg-ssh" {
   source = "github.com/horizoncorp/terraform-aws-securitygroup-01/modules/allow-ssh-22"
