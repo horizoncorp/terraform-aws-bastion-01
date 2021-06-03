@@ -48,17 +48,10 @@ resource "aws_instance" "bastion" {
   tags = merge(var.tags, {
     Name = local.bastion_name
   })
-  # lifecycle {
-  #   ignore_changes = [
-  #     root_block_device.volume_type,
-  #     root_block_device.delete_on_termination,
-  #     root_block_device.encrypted,
-  #   ]
-  # }
 }
 
 module "sg-ssh" {
   source = "github.com/horizoncorp/terraform-aws-securitygroup-01/modules/allow-ssh-22"
   security_group_id = module.sg.sg_id
-  cidr_blocks = ["10.0.0.0/24"]
+  cidr_blocks = ["0.0.0.0/0"]
 }
