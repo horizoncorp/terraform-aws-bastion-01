@@ -19,7 +19,7 @@ resource "aws_key_pair" "generated_key" {
 }
 
 data "template_file" "init" {
-  template = "${file("${path.module}/init.tpl")}"
+  template = "${file("${path.module}/init.sh")}"
 }
 
 module "sg" {
