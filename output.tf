@@ -8,3 +8,8 @@ output "bastion_public_ip" {
   description = "Public IP of bastion"
   value       = aws_instance.bastion.public_ip
 }
+
+output "bastion_sg_id" {
+  description = "Security group ID of bastion"
+  value       = module.sg.sg_id
+}

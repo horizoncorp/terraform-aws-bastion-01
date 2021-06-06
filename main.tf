@@ -48,6 +48,11 @@ resource "aws_instance" "bastion" {
   tags = merge(var.tags, {
     Name = local.bastion_name
   })
+  lifecycle {
+    ignore_changes = [
+      instance_type
+    ]
+  }
 }
 
 module "sg-ssh" {
